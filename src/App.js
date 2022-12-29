@@ -1,24 +1,31 @@
 import logo from './logo.svg';
 import './App.css';
+import "./firebase/config"
+import Header from './pages/Header';
+import {Routes,Route} from "react-router-dom"
+import Signup from "./pages/Signup";
+import { ToastContainer } from 'react-toastify';
+import Profile from './pages/Profile';
+import { UserProvider } from './Context/UserContext';
+import Login from './pages/Login';
+import ProfileRedirect from './Router/ProfileRedirect';
+import AuthRouter from './Router/AuthRouter';
 
 function App() {
   return (
+    <UserProvider>
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <Routes>
+        <Route path="/signup" element={<ProfileRedirect Component={Signup}/>} />
+        <Route path="/login" element={<ProfileRedirect Component={Login}/>} />
+
+        <Route path="/profile/:id" element={<AuthRouter Component={Profile}/>} />
+
+      </Routes>
+      <ToastContainer />
     </div>
+    </UserProvider>
   );
 }
 
