@@ -1,0 +1,105 @@
+.form{
+    width: 35%;
+    /* background-color: #486484; */
+    background-color: #4D6DA8;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+    
+    color: white;
+
+}
+
+.img-cont{
+    width: 70%;
+}
+
+.img-back{
+    width: 100%;
+    height: 100vh;
+}
+
+.logo-cont{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.logo{
+    width: 100px;
+}
+
+.form-controls{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.input{
+    height: 32px; 
+    border-radius: 5px;
+    border: 0px;  
+}
+
+
+.login-buttons{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.or-cont{
+    display: flex;
+    align-self: center;
+    /* text-align: center; */
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+
+.horline{
+    width: 90%;
+}
+
+
+.login-direct{
+    padding: 9px 0px;
+    border: 0px;
+    border-radius: 8px;
+    font-weight: 600;
+
+}
+
+.login-google{
+    padding: 9px 0px;
+    border: 0px;
+    border-radius: 8px;
+    font-weight: 600;
+
+}
+
+.login-redirect{
+    margin-top: 10px;
+    text-align: end;
+    color: white;
+    
+}
+
+.login-redirect:hover{
+    color: black;
+}
+
+.error-msg{
+    position: absolute;
+    top: 4px;
+    right: 0px;
+    font-size: smaller;
+    font-weight: 400;
+    color: red;
+}

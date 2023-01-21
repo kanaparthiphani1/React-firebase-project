@@ -1,39 +1,42 @@
 import { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import { login } from "../firebase/auth";
-import { toast } from 'react-toastify';
-import {useNavigate,Link} from "react-router-dom"
+import { login, signInWithGoogle } from "../firebase/auth";
+
+import * as Yup from "yup";
+import { useNavigate, Link } from "react-router-dom";
+import "./Login.css";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
 function Login(props) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try{
-        setIsLoading(true);
-        const user = await login(email, password);
-        setEmail("")
-        setPassword("")
-        if(user){
-            setIsLoading(false);
-            // props.history.push(`/profile/${user.uid}`);
-            navigate(`/profile/${user.uid}`,{ replace: true })
-        }else{
-            setIsLoading(false);
-            
-        }
-    }catch(e){
-        setIsLoading(false);
-    }
+  const handleSubmit = async (values) => {
+    const { email, password } = values;
+    try {
+      setIsLoading(true);
+      const user = await login(email, password);
 
-    
+      if (user) {
+        setIsLoading(false);
+        // props.history.push(`/profile/${user.uid}`);
+        navigate(`/profile/${user.uid}`, { replace: true });
+      } else {
+        setIsLoading(false);
+      }
+    } catch (e) {
+      setIsLoading(false);
+    }
   };
+
+  const initialValues = {
+    email: "",
+    password: "",
+  };
+
+  const validationSchema = Yup.object({
+    email: Yup.string().required("Required").email("Invalid email format"),
+    password: Yup.string().required("Required"),
+  });
 
   return (
     <div
@@ -41,55 +44,87 @@ function Login(props) {
         width: "100%",
         height: "100vh",
         display: "flex",
-        justifyContent: "center",
+
         alignItems: "center",
+        background:
+          "radial-gradient(circle, rgba(243,246,249,1) 0%, rgba(205,213,224,1) 100%)",
       }}
     >
-      <Form
-        style={{
-            borderRadius: "4px",
-            padding: "18px",
-            boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
-        }}
+      <div className="img-cont">
+        <img
+          src="images/background/login.jpg"
+          alt="img-back"
+          className="img-back"
+        />
+      </div>
+      <Formik
+        initialValues={initialValues}
         onSubmit={handleSubmit}
-        >
-        <h2 style={{textAlign:"center",marginBottom:"15px"}}>Login</h2>
-        <Row className="mb-3">
-          <Form.Group as={Col} controlId="formGridEmail">
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-              type="email"
-              value={email}
-              placeholder="Enter email"
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-            />
-          </Form.Group>
-        </Row>
+        validationSchema={validationSchema}
+      >
+        {(formik) => {
+          console.log("Formik : ", formik);
+          return (
+            <Form className="form">
+              <div className="logo-cont">
+                <img
+                  src="images/logos/logo-white.png"
+                  className="logo"
+                  alt="logo"
+                />
+              </div>
 
-        <Row className="mb-3">
-          <Form.Group as={Col} controlId="formGridPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              value={password}
-              placeholder="Password"
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-            />
-          </Form.Group>
-        </Row>
+              <div className="form-controls">
+                <label>Email</label>
+                <Field className="input" type="email" name="email" />
+                <ErrorMessage
+                  name="email"
+                  component="p"
+                  className="error-msg"
+                />
+              </div>
+              <div className="form-controls">
+                <label>Password</label>
+                <Field className="input" type="password" name="password" />
+                <ErrorMessage
+                  name="password"
+                  component="p"
+                  className="error-msg"
+                />
+              </div>
 
-        <Link to="/signup">
-              or Signup
-        </Link>
+              <div className="login-buttons">
+                <button
+                  type="submit"
+                  className="login-direct"
+                  // disabled={
+                  //   formik.isSubmitting || !(formik.dirty && formik.isValid)
+                  // }
+                >
+                  Login
+                </button>
+                <div className="or-cont">
+                  <hr className="horline" />
+                  {/* <p> or </p> */}
+                  {/* <hr className="horline" /> */}
+                </div>
+                <button
+                  className="login-google"
+                  onClick={async () => {
+                    signInWithGoogle();
+                  }}
+                >
+                  <i className="fa-brands fa-google"></i> - Google
+                </button>
 
-        <Button style={{float:"right"}} variant="primary" type="submit">
-          Login
-        </Button>
-      </Form>
+                <Link to="/signup" className="login-redirect">
+                  Register
+                </Link>
+              </div>
+            </Form>
+          );
+        }}
+      </Formik>
     </div>
   );
 }

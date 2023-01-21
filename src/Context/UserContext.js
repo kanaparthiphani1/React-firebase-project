@@ -9,7 +9,6 @@ export const UserProvider = (props)=>{
     useEffect(()=>{
         const unsubscribe = firebase.auth().onAuthStateChanged((user)=>{
             setSession({user,loading:false});
-
         })
 
         return ()=>unsubscribe()

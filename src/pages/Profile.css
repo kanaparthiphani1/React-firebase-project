@@ -1,0 +1,24 @@
+.profile{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-inner{
+    width: 40%;
+}
+
+.row1{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.form-controls1{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    position: relative;
+    flex-grow: 1;
+    margin: 5px;
+}
